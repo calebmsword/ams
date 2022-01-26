@@ -50,7 +50,7 @@ _Any code returned not in this list indicates that something has gone wrong._
   ```JSON
   {
     "password": String,
-    "roleId": int
+    "roleId": number
   }
   ```
 
