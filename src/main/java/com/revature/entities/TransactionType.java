@@ -8,18 +8,18 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @ToString
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "transaction_types")
+public class TransactionType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // insufficient!
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     String name;
 
-    @OneToMany(mappedBy = "role")
-    List<User> userList;
+    @OneToMany(mappedBy = "transactionType")
+    List<Transaction> transactionList;
 }
