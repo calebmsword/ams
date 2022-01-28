@@ -18,6 +18,7 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long accountNumber;
+    double balance;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerId", referencedColumnName = "id")

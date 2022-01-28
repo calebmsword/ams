@@ -42,11 +42,15 @@ public class BankAccountService {
         return bankAccountRepository.save(bankAccount);
     }
 
-    public BankAccount deleteBankAccount(Long accountNumber) {
+    public BankAccount deleteBankAccount(Long accountNumber) throws BankAccountNotFoundException {
+//        System.out.println("am i here?");
         Optional<BankAccount> bankAccountOptional = bankAccountRepository.findById(accountNumber);
-        if (!bankAccountOptional.isPresent()) {
-            new BankAccountNotFoundException("BankAccount not found with accountNumber: "+accountNumber);
-        }
+//        System.out.println("bankAccountOptional is: "+bankAccountOptional.toString());
+//        System.out.println("am i there?");
+//        if (!bankAccountOptional.isPresent()) {
+//            System.out.println("am i in the if statement?");
+//            new BankAccountNotFoundException("BankAccount not found with accountNumber: "+accountNumber);
+//        }
         BankAccount bankAccount = bankAccountOptional.get();
         bankAccountRepository.deleteById(accountNumber);
         return bankAccount;

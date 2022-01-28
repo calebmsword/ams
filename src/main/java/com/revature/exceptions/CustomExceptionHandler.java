@@ -63,4 +63,12 @@ public class CustomExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(status, message);
         return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = AddressNotFoundException.class)
+    public ResponseEntity<ErrorMessage> UserExceptionHandler(AddressNotFoundException addressNotFoundException) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = addressNotFoundException.getMessage();
+        ErrorMessage errorMessage = new ErrorMessage(status, message);
+        return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
+    }
 }

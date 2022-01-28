@@ -42,7 +42,7 @@ public class BankAccountController {
     }
 
     @DeleteMapping("/{accountNumber}")
-    public ResponseEntity<BankAccount> deleteBankAccount(@PathVariable Long accountNumber) {
+    public ResponseEntity<BankAccount> deleteBankAccount(@PathVariable Long accountNumber) throws BankAccountNotFoundException{
         return new ResponseEntity<BankAccount>(bankAccountService.deleteBankAccount(accountNumber), HttpStatus.OK);
     }
 }
