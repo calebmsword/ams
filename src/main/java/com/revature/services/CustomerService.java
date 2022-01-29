@@ -19,10 +19,10 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findCustomerById(Long id) throws CustomerNotFoundException {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+    public Customer findCustomerById(Long personalAccountNumber) throws CustomerNotFoundException {
+        Optional<Customer> customerOptional = customerRepository.findById(personalAccountNumber);
         if (!customerOptional.isPresent()) {
-            throw new CustomerNotFoundException("Customer not found with id: "+id);
+            throw new CustomerNotFoundException("Customer not found with personalAccountNumber: "+personalAccountNumber);
         }
         return customerOptional.get();
     }
@@ -35,21 +35,21 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public Customer editCustomer(Customer customer) {
-        Optional<Customer> customerOptional = customerRepository.findById(customer.getId());
+    public Customer editCustomer(Customer customer) throws CustomerNotFoundException {
+        Optional<Customer> customerOptional = customerRepository.findById(customer.getPermanentAccountNumber());
         if (!customerOptional.isPresent()) {
-            new CustomerNotFoundException("Customer not found with id: "+customer.getId());
+            throw new CustomerNotFoundException("Customer not found with personalAccountNumber: "+customer.getPermanentAccountNumber());
         }
         return customerRepository.save(customer);
     }
 
-    public Customer deleteCustomer(Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+    public Customer deleteCustomer(Long personalAccountNumber) throws CustomerNotFoundException {
+        Optional<Customer> customerOptional = customerRepository.findById(personalAccountNumber);
         if (!customerOptional.isPresent()) {
-            new CustomerNotFoundException("Customer not found with id: "+id);
+            throw new CustomerNotFoundException("Customer not found with personalAccountNumber: "+personalAccountNumber);
         }
         Customer customer = customerOptional.get();
-        customerRepository.deleteById(id);
+        customerRepository.deleteById(personalAccountNumber);
         return customer;
     }
 }

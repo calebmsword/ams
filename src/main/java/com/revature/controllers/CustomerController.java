@@ -37,12 +37,12 @@ public class CustomerController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Customer> editCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Customer> editCustomer(@RequestBody Customer customer) throws CustomerNotFoundException {
         return new ResponseEntity<Customer>(customerService.editCustomer(customer), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) throws CustomerNotFoundException {
         return new ResponseEntity<Customer>(customerService.deleteCustomer(id), HttpStatus.OK);
     }
 }

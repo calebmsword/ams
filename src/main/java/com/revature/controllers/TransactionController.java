@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.entities.Transaction;
+import com.revature.exceptions.BankAccountNotFoundException;
 import com.revature.exceptions.TransactionNotFoundException;
 import com.revature.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +33,17 @@ public class TransactionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) throws BankAccountNotFoundException {
         return new ResponseEntity<Transaction>(transactionService.saveTransaction(transaction), HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<Transaction> editTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> editTransaction(@RequestBody Transaction transaction) throws TransactionNotFoundException {
         return new ResponseEntity<Transaction>(transactionService.editTransaction(transaction), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Transaction> deleteTransaction(@PathVariable Long id) {
+    public ResponseEntity<Transaction> deleteTransaction(@PathVariable Long id) throws TransactionNotFoundException {
         return new ResponseEntity<Transaction>(transactionService.deleteTransaction(id), HttpStatus.OK);
     }
 }

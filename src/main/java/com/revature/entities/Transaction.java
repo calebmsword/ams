@@ -18,17 +18,14 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    Date timeOfTransaction;
+    String initiatorAccountName;
+    String datimeOfTransaction;
+    String transactionType;
+    float amount;
+    Long recipientAccountNumber;
+    String recipientAccountName;
 
     @ManyToOne
-    @JoinColumn(name = "transactionTypeId", nullable = false)
-    TransactionType transactionType;
-
-    @ManyToOne
-    @JoinColumn(name = "cardTypeId", nullable = false)
-    CardType cardType;
-
-    @ManyToOne
-    @JoinColumn(name = "referenceNumber", nullable = false)
-    BankAccount bankAccount;
+    @JoinColumn(name = "initiatorAccount")
+    BankAccount initiatorAccount;
 }

@@ -1,7 +1,9 @@
 package com.revature.services;
 
 import com.revature.entities.BankAccount;
+import com.revature.entities.Customer;
 import com.revature.exceptions.BankAccountNotFoundException;
+import com.revature.exceptions.CustomerNotFoundException;
 import com.revature.repositories.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.Optional;
 @Service
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
+    private final CustomerService customerService;
 
     @Autowired
-    public BankAccountService(BankAccountRepository bankAccountRepository) {
+    public BankAccountService(BankAccountRepository bankAccountRepository, CustomerService customerService) {
         this.bankAccountRepository = bankAccountRepository;
+        this.customerService = customerService;
     }
 
     public BankAccount findBankAccountById(Long accountNumber) throws BankAccountNotFoundException {
@@ -30,27 +34,25 @@ public class BankAccountService {
         return bankAccountRepository.findAll();
     }
 
-    public BankAccount saveBankAccount(BankAccount bankAccount) {
+    public BankAccount saveBankAccount(BankAccount bankAccount) throws CustomerNotFoundException {
+        Customer customer = customerService.findCustomerById(bankAccount.getCustomer().getPermanentAccountNumber());
+        bankAccount.setCustomer(customer);
         return bankAccountRepository.save(bankAccount);
     }
 
-    public BankAccount editBankAccount(BankAccount bankAccount) {
+    public BankAccount editBankAccount(BankAccount bankAccount) throws BankAccountNotFoundException {
         Optional<BankAccount> bankAccountOptional = bankAccountRepository.findById(bankAccount.getAccountNumber());
         if (!bankAccountOptional.isPresent()) {
-            new BankAccountNotFoundException("BankAccount not found with accountNumber: "+bankAccount.getAccountNumber());
+            throw new BankAccountNotFoundException("BankAccount not found with accountNumber: "+bankAccount.getAccountNumber());
         }
         return bankAccountRepository.save(bankAccount);
     }
 
     public BankAccount deleteBankAccount(Long accountNumber) throws BankAccountNotFoundException {
-//        System.out.println("am i here?");
         Optional<BankAccount> bankAccountOptional = bankAccountRepository.findById(accountNumber);
-//        System.out.println("bankAccountOptional is: "+bankAccountOptional.toString());
-//        System.out.println("am i there?");
-//        if (!bankAccountOptional.isPresent()) {
-//            System.out.println("am i in the if statement?");
-//            new BankAccountNotFoundException("BankAccount not found with accountNumber: "+accountNumber);
-//        }
+        if (!bankAccountOptional.isPresent()) {
+            throw new BankAccountNotFoundException("BankAccount not found with accountNumber: "+accountNumber);
+        }
         BankAccount bankAccount = bankAccountOptional.get();
         bankAccountRepository.deleteById(accountNumber);
         return bankAccount;

@@ -1,12 +1,13 @@
 package com.revature.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,17 +18,27 @@ import java.util.Date;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    Long personalAccountNumber;
+    Long permanentAccountNumber;
+    String loginId;
+    String password;
+    boolean isNewCustomer;
+    String role;
+    String firstname;
+    String lastname;
     String uniqueIdentifier;
-    String name;
     String email;
-    Date dateOfBirth;
+    int birthDay;
+    String birthMonth;
+    int birthYear;
+    String street;
+    String city;
+    String state;
+    String areaCode;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressId", referencedColumnName = "id")
-    Address address;
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer")
+    List<BankAccount> bankAccount;
 
-    @OneToOne(mappedBy = "customer")
-    BankAccount bankAccount;
+    @OneToMany(mappedBy = "accountNumber")
+    List<BankAccount> linkedAccounts;
 }

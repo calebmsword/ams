@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,17 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long accountNumber;
+    String accountName;
     double balance;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customerId", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerId", referencedColumnName = "permanentAccountNumber")
     Customer customer;
 
-    @OneToMany(mappedBy = "bankAccount")
+    @JsonIgnore
+    @OneToMany(mappedBy = "initiatorAccount")
     List<Transaction> transactionList;
+
+    @ManyToOne
+    Customer linkedCustomer;
 }

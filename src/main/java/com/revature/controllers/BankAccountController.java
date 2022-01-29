@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.entities.BankAccount;
 import com.revature.exceptions.BankAccountNotFoundException;
+import com.revature.exceptions.CustomerNotFoundException;
 import com.revature.services.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,12 @@ public class BankAccountController {
     }
 
     @PostMapping("")
-    public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount) {
+    public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount) throws CustomerNotFoundException {
         return new ResponseEntity<BankAccount>(bankAccountService.saveBankAccount(bankAccount), HttpStatus.OK);
     }
 
     @PutMapping("")
-    public ResponseEntity<BankAccount> editBankAccount(@RequestBody BankAccount bankAccount) {
+    public ResponseEntity<BankAccount> editBankAccount(@RequestBody BankAccount bankAccount) throws BankAccountNotFoundException {
         return new ResponseEntity<BankAccount>(bankAccountService.editBankAccount(bankAccount), HttpStatus.OK);
     }
 
