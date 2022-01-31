@@ -1,6 +1,8 @@
 package com.revature.controllers;
 
+import com.revature.entities.Credentials;
 import com.revature.entities.Customer;
+import com.revature.exceptions.BankAccountNotFoundException;
 import com.revature.exceptions.CustomerNotFoundException;
 import com.revature.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
+@CrossOrigin
 public class CustomerController {
     
     private final CustomerService customerService;
@@ -37,12 +40,17 @@ public class CustomerController {
     }
 
     @PutMapping("")
-    public ResponseEntity<Customer> editCustomer(@RequestBody Customer customer) throws CustomerNotFoundException {
+    public ResponseEntity<Customer> editCustomer(@RequestBody Customer customer) throws CustomerNotFoundException, BankAccountNotFoundException {
         return new ResponseEntity<Customer>(customerService.editCustomer(customer), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) throws CustomerNotFoundException {
         return new ResponseEntity<Customer>(customerService.deleteCustomer(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Customer> login(@RequestBody Credentials credentials) throws CustomerNotFoundException {
+        return new ResponseEntity<Customer>(customerService.findCustomerByCredentials(credentials), HttpStatus.OK);
     }
 }

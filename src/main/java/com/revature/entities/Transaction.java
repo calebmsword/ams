@@ -16,10 +16,11 @@ import java.util.Date;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="TRANSACTION_SEQUENCE_GENERATOR", sequenceName="TRANSACTION_SEQUENCE", initialValue=1000000000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRANSACTION_SEQUENCE_GENERATOR")
     Long id;
     String initiatorAccountName;
-    String datimeOfTransaction;
+    Long datimeOfTransaction;
     String transactionType;
     float amount;
     Long recipientAccountNumber;

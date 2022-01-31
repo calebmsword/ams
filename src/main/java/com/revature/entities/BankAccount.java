@@ -17,12 +17,13 @@ import java.util.List;
 @Table(name = "bank_accounts")
 public class BankAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="ACCOUNT_SEQUENCE_GENERATOR", sequenceName="ACCOUNT_SEQUENCE", initialValue=100000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCOUNT_SEQUENCE_GENERATOR")
     Long accountNumber;
     String accountName;
     double balance;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customerId", referencedColumnName = "permanentAccountNumber")
     Customer customer;
 

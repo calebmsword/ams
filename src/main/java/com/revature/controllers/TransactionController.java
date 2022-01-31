@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.entities.Transaction;
 import com.revature.exceptions.BankAccountNotFoundException;
+import com.revature.exceptions.InsufficientFundsException;
 import com.revature.exceptions.TransactionNotFoundException;
 import com.revature.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
+@CrossOrigin
 public class TransactionController {
     
     private final TransactionService transactionService;
@@ -32,8 +34,13 @@ public class TransactionController {
         return new ResponseEntity<List<Transaction>>(transactionService.findAllTransactions(), HttpStatus.OK);
     }
 
+    @GetMapping("/byaccount/{accountNumber}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByAccountNumber(@PathVariable Long accountNumber) {
+        return new ResponseEntity<List<Transaction>>(transactionService.findAllTransactionsByAccountNumber(accountNumber), HttpStatus.OK);
+    }
+
     @PostMapping("")
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) throws BankAccountNotFoundException {
+    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) throws BankAccountNotFoundException, InsufficientFundsException {
         return new ResponseEntity<Transaction>(transactionService.saveTransaction(transaction), HttpStatus.OK);
     }
 

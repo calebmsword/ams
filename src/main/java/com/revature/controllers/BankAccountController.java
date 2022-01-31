@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bankaccount")
+@CrossOrigin
 public class BankAccountController {
     
     private final BankAccountService bankAccountService;
@@ -30,6 +31,11 @@ public class BankAccountController {
     @GetMapping("")
     public ResponseEntity<List<BankAccount>> getAllBankAccounts() {
         return new ResponseEntity<List<BankAccount>>(bankAccountService.findAllBankAccounts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/bypan/{pan}")
+    public ResponseEntity<List<BankAccount>> getAllBankAccountsByPAN(@PathVariable Long pan) {
+        return new ResponseEntity<List<BankAccount>>(bankAccountService.findAllBankAccountsByPan(pan), HttpStatus.OK);
     }
 
     @PostMapping("")

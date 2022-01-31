@@ -17,7 +17,6 @@ import java.util.List;
 @Table(name = "customers")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     Long permanentAccountNumber;
     String loginId;
     String password;
@@ -36,7 +35,7 @@ public class Customer {
     String areaCode;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     List<BankAccount> bankAccount;
 
     @OneToMany(mappedBy = "accountNumber")

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BankAccountService {
@@ -54,7 +56,16 @@ public class BankAccountService {
             throw new BankAccountNotFoundException("BankAccount not found with accountNumber: "+accountNumber);
         }
         BankAccount bankAccount = bankAccountOptional.get();
-        bankAccountRepository.deleteById(accountNumber);
+        bankAccountRepository.deleteById(bankAccount.getAccountNumber());
         return bankAccount;
+    }
+
+    public List<BankAccount> findAllBankAccountsByPan(Long pan) {
+        List<BankAccount> bankAccountList = findAllBankAccounts();
+        List<BankAccount> bankAccountListFiltered = bankAccountList
+                .stream()
+                .filter( bankAccount -> Objects.equals(bankAccount.getCustomer().getPermanentAccountNumber(), pan))
+                .collect(Collectors.toList());
+        return bankAccountListFiltered;
     }
 }

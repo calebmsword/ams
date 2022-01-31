@@ -32,4 +32,11 @@ public class CustomExceptionHandler {
         return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = InsufficientFundsException.class)
+    public ResponseEntity<ErrorMessage> UserExceptionHandler(InsufficientFundsException insufficientFundsException) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = insufficientFundsException.getMessage();
+        ErrorMessage errorMessage = new ErrorMessage(status, message);
+        return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
+    }
 }
