@@ -7,6 +7,7 @@ import com.revature.exceptions.InsufficientFundsException;
 import com.revature.exceptions.TransactionNotFoundException;
 import com.revature.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -86,9 +87,7 @@ public class TransactionService {
     }
 
     public List<Transaction> findAllTransactionsByAccountNumber(Long accountNumber) {
-        System.out.println("here");
         List<Transaction> transactionList = findAllTransactions();
-        System.out.println("there");
         List<Transaction> transactionListFiltered = transactionList
             .stream()
             .filter( transaction ->
@@ -96,7 +95,17 @@ public class TransactionService {
                 Objects.equals(transaction.getRecipientAccountNumber(), accountNumber)
             )
             .collect(Collectors.toList());
-        System.out.println("everywhere");
         return transactionListFiltered;
+    }
+
+    public List<Transaction> findAllTransactionsWithinWindow(Long timestampA, Long timestampB) {
+        List<Transaction> allTransactions = findAllTransactions();
+        List<Transaction> allTransactionsFiltered = allTransactions
+                .stream()
+                .filter( transaction ->
+                        transaction.getDatimeOfTransaction() > timestampA &&
+                        transaction.getDatimeOfTransaction() < timestampB)
+                .collect(Collectors.toList());
+        return allTransactionsFiltered;
     }
 }

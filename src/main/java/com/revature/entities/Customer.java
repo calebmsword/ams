@@ -35,9 +35,10 @@ public class Customer {
     String areaCode;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     List<BankAccount> bankAccount;
 
-    @OneToMany(mappedBy = "accountNumber")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "linkedCustomer", fetch = FetchType.EAGER)
     List<BankAccount> linkedAccounts;
 }

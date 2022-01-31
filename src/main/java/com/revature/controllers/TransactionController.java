@@ -39,6 +39,11 @@ public class TransactionController {
         return new ResponseEntity<List<Transaction>>(transactionService.findAllTransactionsByAccountNumber(accountNumber), HttpStatus.OK);
     }
 
+    @GetMapping("/window/{timestampA}/{timestampB}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsWithinWindow(@PathVariable Long timestampA, @PathVariable Long timestampB) {
+        return new ResponseEntity<List<Transaction>>(transactionService.findAllTransactionsWithinWindow(timestampA,timestampB), HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) throws BankAccountNotFoundException, InsufficientFundsException {
         return new ResponseEntity<Transaction>(transactionService.saveTransaction(transaction), HttpStatus.OK);

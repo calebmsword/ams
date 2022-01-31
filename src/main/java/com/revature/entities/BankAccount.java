@@ -31,6 +31,6 @@ public class BankAccount {
     @OneToMany(mappedBy = "initiatorAccount")
     List<Transaction> transactionList;
 
-    @ManyToOne
-    Customer linkedCustomer;
+    @ManyToMany(fetch = FetchType.EAGER)
+    List<Customer> linkedCustomer;
 }

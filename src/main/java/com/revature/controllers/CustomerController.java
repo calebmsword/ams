@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.entities.BankAccount;
 import com.revature.entities.Credentials;
 import com.revature.entities.Customer;
 import com.revature.exceptions.BankAccountNotFoundException;
@@ -24,14 +25,13 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) throws CustomerNotFoundException {
-        return new ResponseEntity<Customer>(customerService.findCustomerById(id), HttpStatus.OK);
+    @GetMapping("/{pan}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long pan) throws CustomerNotFoundException {
+        return new ResponseEntity<Customer>(customerService.findCustomerById(pan), HttpStatus.OK);
     }
-
-    @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        return new ResponseEntity<List<Customer>>(customerService.findAllCustomers(), HttpStatus.OK);
+    @GetMapping("/{pan}/linked")
+    public ResponseEntity<List<BankAccount>> getAllLinkedBankAccounts(@PathVariable Long pan) {
+        return new ResponseEntity<List<BankAccount>>(customerService.findAllLinkedBankAccountsByCustomerPan(pan), HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -44,9 +44,14 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customerService.editCustomer(customer), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) throws CustomerNotFoundException {
-        return new ResponseEntity<Customer>(customerService.deleteCustomer(id), HttpStatus.OK);
+    @PutMapping("/{pan}/{accountNumber}")
+    public ResponseEntity<Customer> addLinkedAccountToCustomer(@PathVariable Long pan, @PathVariable long accountNumber) throws CustomerNotFoundException, BankAccountNotFoundException {
+        return new ResponseEntity<Customer>(customerService.addLinkedAccountToCustomer(pan,accountNumber),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{pan}")
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long pan) throws CustomerNotFoundException {
+        return new ResponseEntity<Customer>(customerService.deleteCustomer(pan), HttpStatus.OK);
     }
 
     @PostMapping("/login")
