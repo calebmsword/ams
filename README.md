@@ -1,4 +1,4 @@
-# Bank Account Management System Backend
+# Account Management System (AMS) Backend
 
 NOTE: This repo contains the project back-end. Front-end can be found at [https://github.com/calebmsword/ams-fe](https://github.com/calebmsword/ams-fe).
 
